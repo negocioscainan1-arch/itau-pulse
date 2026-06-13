@@ -1,6 +1,8 @@
 {
-  "name": "Itaú Pulse Live",
-  "short_name": "Itaú Pulse",
+  {
+  "name": "FinPulse",
+  "short_name": "FinPulse"
+}
   "description": "Inteligência bancária diária com foco em Itaú, cartões, Pix, crédito, pagamentos e concorrência.",
   "start_url": "./index.html",
   "scope": "./",
