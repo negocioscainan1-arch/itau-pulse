@@ -75,12 +75,47 @@ async def health():
 async def force_refresh():
     return await refresh_cache()
 
+def strategic_score(n):
+    score = n.get("relevance_score", 0) or 0
+
+    title = (n.get("title") or "").lower()
+    topics = " ".join(n.get("topic_tags", [])).lower()
+    banks = " ".join(n.get("bank_tags", [])).lower()
+
+    if "itaú" in banks or "itau" in banks or "itaú" in title or "itau" in title:
+        score += 3
+
+    if "nubank" in banks or "nubank" in title:
+        score += 2
+
+    if "pix" in topics or "pix" in title:
+        score += 2
+
+    if "cartões" in topics or "cartão" in topics or "cartoes" in topics or "cartão" in title:
+        score += 2
+
+    if "crédito" in topics or "credito" in topics or "crédito" in title:
+        score += 1.5
+
+    if "fraude" in topics or "golpe" in title or "fraude" in title:
+        score += 1.5
+
+    if "resultado" in topics or "resultados" in topics or "lucro" in title or "roe" in title:
+        score += 1
+
+    return score
+
+
 @app.get("/brief/live")
 async def live_brief():
     if not CACHE["news"]:
         await refresh_cache()
 
-    relevant_news = CACHE["news"][:30]
+    relevant_news = sorted(
+        CACHE["news"],
+        key=lambda x: strategic_score(x),
+        reverse=True
+    )[:30]
 
     recent_news = sorted(
         CACHE["news"],
