@@ -79,10 +79,20 @@ async def force_refresh():
 async def live_brief():
     if not CACHE["news"]:
         await refresh_cache()
+
+    relevant_news = CACHE["news"][:30]
+
+    recent_news = sorted(
+        CACHE["news"],
+        key=lambda x: x.get("published_at", ""),
+        reverse=True
+    )[:30]
+
     return {
         "updated_at": CACHE["updated_at"],
         "summary": CACHE["summary"],
-        "top_news": CACHE["news"][:30],
+        "top_news": relevant_news,
+        "recent_news": recent_news,
         "insights": CACHE["insights"],
         "metrics": CACHE["metrics"]
     }
