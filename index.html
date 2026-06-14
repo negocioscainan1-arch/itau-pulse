@@ -74,10 +74,46 @@
     </section>
 
     <section id="dash" class="screen">
-      <div class="title"><h2>Dashboard</h2><span>setor</span></div>
-      <div class="card"><canvas id="chartProfit"></canvas></div>
-      <div class="card"><canvas id="chartRoe"></canvas></div>
-      <div class="card"><h3>Leitura do painel</h3><p>O painel combina números públicos e leitura estratégica. Para enriquecer com dados reais de cartões, Pix e crédito, conecte fontes internas autorizadas ou bases públicas recorrentes.</p></div>
+<div class="title">
+  <h2>Dashboard Bancário</h2>
+  <span>Indicadores comparativos do setor</span>
+</div>
+
+<div class="card">
+  <h3>📊 Dashboard Setorial</h3>
+  <p>
+    Indicadores públicos dos principais bancos brasileiros.
+    Comparativos de rentabilidade, crédito, clientes,
+    pagamentos e eficiência operacional.
+  </p>
+</div>
+
+<div class="card"><canvas id="chartProfit"></canvas></div>
+<div class="card"><canvas id="chartRoe"></canvas></div>
+<div class="card"><canvas id="chartRevenue"></canvas></div>
+<div class="card"><canvas id="chartMargin"></canvas></div>
+
+<div class="card"><canvas id="chartCredit"></canvas></div>
+<div class="card"><canvas id="chartNpl"></canvas></div>
+<div class="card"><canvas id="chartCreditCost"></canvas></div>
+<div class="card"><canvas id="chartCoverage"></canvas></div>
+
+<div class="card"><canvas id="chartClients"></canvas></div>
+<div class="card"><canvas id="chartGrowth"></canvas></div>
+<div class="card"><canvas id="chartDigital"></canvas></div>
+<div class="card"><canvas id="chartSatisfaction"></canvas></div>
+
+<div class="card"><canvas id="chartTpv"></canvas></div>
+<div class="card"><canvas id="chartPix"></canvas></div>
+<div class="card"><canvas id="chartCardsRevenue"></canvas></div>
+<div class="card"><canvas id="chartApproval"></canvas></div>
+
+<div class="card"><canvas id="chartEfficiency"></canvas></div>
+<div class="card"><canvas id="chartServe"></canvas></div>
+
+<div class="card"><canvas id="chartCreditShare"></canvas></div>
+<div class="card"><canvas id="chartCardsShare"></canvas></div>
+<div class="card"><canvas id="chartMarketCap"></canvas></div>
     </section>
 
   </main>
@@ -175,7 +211,134 @@ function openUrl(url){if(url==='#'){alert('Fonte demonstrativa. Conecte o backen
 function shareText(text){if(navigator.share){navigator.share({title:'Itaú Pulse',text})}else{navigator.clipboard.writeText(text);alert('Copiado!')}}
 function drawBar(id,labels,values,title){let c=document.getElementById(id);if(!c)return;let r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;c.width=r.width*d;c.height=r.height*d;let x=c.getContext('2d');x.scale(d,d);let w=r.width,h=r.height,p=38;x.clearRect(0,0,w,h);x.fillStyle='#73665d';x.font='12px -apple-system';x.fillText(title,14,22);let max=Math.max(...values)*1.18,bw=(w-p-20)/values.length*.6;values.forEach((v,i)=>{let xx=p+i*((w-p-20)/values.length)+bw*.25,bh=(v/max)*(h-78),yy=h-34-bh;let g=x.createLinearGradient(0,yy,0,h-34);g.addColorStop(0,'#ec7000');g.addColorStop(1,'#ffb267');x.fillStyle=g;round(x,xx,yy,bw,bh,10);x.fill();x.fillStyle='#15100c';x.font='800 12px -apple-system';x.fillText(v.toLocaleString('pt-BR'),xx,yy-7);x.fillStyle='#73665d';x.font='11px -apple-system';x.fillText(labels[i],xx,h-13)})}
 function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
-function drawCharts(){drawBar('chartProfit',['Itaú','Bradesco','Sant.','BB'],[12.3,6.8,3.8,3.4],'Lucro 1T26 — R$ bi');drawBar('chartRoe',['Itaú','Nu','Brad.','Sant.','BB'],[24.8,29,15.8,16,7.3],'ROE / eficiência competitiva — %')}
+function drawCharts(){
+
+  drawBar('chartProfit',
+    ['Itaú','Nu','Brad.','Sant.','BB'],
+    [12.3,2.8,6.8,3.8,3.4],
+    '💰 Lucro Líquido | Quanto o banco efetivamente ganhou'
+  );
+
+  drawBar('chartRoe',
+    ['Itaú','Nu','Brad.','Sant.','BB'],
+    [24.8,29,15.8,16,7.3],
+    '📈 ROE | Retorno sobre patrimônio'
+  );
+
+  drawBar('chartRevenue',
+    ['Itaú','Nu','Brad.','Sant.','BB'],
+    [44,11,30,18,29],
+    '🏦 Receita Total | Receita trimestral'
+  );
+
+  drawBar('chartMargin',
+    ['Itaú','Brad.','Sant.','BB'],
+    [31,22,15,20],
+    '💵 Margem Financeira | Resultado das operações financeiras'
+  );
+
+  drawBar('chartCredit',
+    ['Itaú','BB','Brad.','Sant.','Nu'],
+    [1483,1300,1090,680,185],
+    '🏦 Carteira de Crédito | Total emprestado'
+  );
+
+  drawBar('chartNpl',
+    ['Itaú','Nu','Brad.','Sant.','BB'],
+    [1.9,6.5,4.2,3.2,5.0],
+    '⚠️ NPL 90+ | Inadimplência acima de 90 dias'
+  );
+
+  drawBar('chartCreditCost',
+    ['Itaú','Brad.','Sant.','BB'],
+    [4.1,5.6,4.8,6.1],
+    '📉 Custo do Crédito | Impacto da inadimplência'
+  );
+
+  drawBar('chartCoverage',
+    ['Itaú','Brad.','Sant.','BB'],
+    [245,180,195,210],
+    '🛡️ Cobertura | Proteção contra perdas'
+  );
+
+  drawBar('chartClients',
+    ['Nu','BB','Brad.','Itaú','Sant.'],
+    [135,82,78,70,66],
+    '👥 Clientes | Base total de clientes'
+  );
+
+  drawBar('chartGrowth',
+    ['Nu','Itaú','BB','Brad.','Sant.'],
+    [18,5,3,2,1],
+    '🚀 Crescimento | Expansão da base'
+  );
+
+  drawBar('chartDigital',
+    ['Nu','Itaú','Inter','BB','Brad.'],
+    [100,89,100,72,68],
+    '📱 Clientes Digitais | Uso dos canais digitais'
+  );
+
+  drawBar('chartSatisfaction',
+    ['Nu','Itaú','Inter','BB','Brad.'],
+    [86,78,76,72,70],
+    '❤️ Satisfação | Experiência dos clientes'
+  );
+
+  drawBar('chartTpv',
+    ['Itaú','BB','Brad.','Sant.'],
+    [1200,650,610,480],
+    '💳 TPV Cartões | Volume movimentado'
+  );
+
+  drawBar('chartPix',
+    ['Itaú','Nu','BB','Brad.'],
+    [100,95,90,75],
+    '⚡ Pix | Utilização relativa'
+  );
+
+  drawBar('chartCardsRevenue',
+    ['Itaú','BB','Brad.','Sant.'],
+    [16,8,9,6],
+    '💰 Receita Cartões | Resultado do negócio de cartões'
+  );
+
+  drawBar('chartApproval',
+    ['Itaú','Nu','Brad.','Sant.'],
+    [97.5,96.8,95.4,95.0],
+    '✅ Aprovação | Taxa de transações aprovadas'
+  );
+
+  drawBar('chartEfficiency',
+    ['Itaú','Nu','BB','Brad.','Sant.'],
+    [39,31,43,46,42],
+    '⚙️ Eficiência | Quanto menor, melhor'
+  );
+
+  drawBar('chartServe',
+    ['Nu','Itaú','Inter','BB'],
+    [1.0,2.3,1.4,3.2],
+    '📞 Custo de Servir | Custo operacional por cliente'
+  );
+
+  drawBar('chartCreditShare',
+    ['Itaú','BB','Brad.','Sant.','Nu'],
+    [21,19,16,11,3],
+    '🏆 Market Share Crédito'
+  );
+
+  drawBar('chartCardsShare',
+    ['Itaú','BB','Brad.','Sant.'],
+    [29,17,15,11],
+    '💳 Market Share Cartões'
+  );
+
+  drawBar('chartMarketCap',
+    ['Nu','Itaú','BB','Sant.','Brad.'],
+    [65,58,22,18,15],
+    '📈 Market Cap | Valor de mercado'
+  );
+}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
 load();
 setInterval(load, 30*60*1000);
